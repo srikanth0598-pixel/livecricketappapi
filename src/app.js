@@ -9,6 +9,7 @@ const playerRoutes = require('./routes/playerRoutes');
 const tournamentsRoutes = require('./routes/tournamentsRoutes');
 const matchRoutes = require('./routes/matchRoutes');
 const scorecardRoutes = require('./routes/scorecardRoutes');
+const ballRoutes = require('./routes/ballRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
@@ -28,6 +29,7 @@ app.use('/api/players', playerRoutes);
 app.use('/api/tournaments', tournamentsRoutes);
 app.use('/api/matches', matchRoutes);
 app.use('/api/scorecards', scorecardRoutes);
+app.use('/api/balls', ballRoutes);
  
 
 // Error handler (always last)
