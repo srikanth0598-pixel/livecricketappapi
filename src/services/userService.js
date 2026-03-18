@@ -2,7 +2,19 @@ const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const authController = require('../controllers/authController');
 const jwt = require("jsonwebtoken");
+const JWT_SECRET = process.env.JWT_SECRET || "secretKey";
+
 class UserService {
+  sanitizeUser(user, extra = {}) {
+    const normalizedUser = user?.toObject ? user.toObject() : user;
+
+    if (!normalizedUser) {
+      return null;
+    }
+
+    const { password, __v, ...safeUser } = normalizedUser;
+    return { ...safeUser, ...extra };
+  }
 
   async createUser(data) {
     const { name, email, password } = data;
@@ -29,7 +41,7 @@ class UserService {
 
     await authController.sendOTP({ ...data, otp, token: otpHashed, userId: user._id });
     if (!user) throw new Error('User creation failed');
-    return user;
+    return this.sanitizeUser(user);
   }
   async LoginUser(data) {
     const { email, password } = data;
@@ -42,13 +54,12 @@ class UserService {
 
     const token = jwt.sign(
       { id: user._id },
-      "secretKey",
+      JWT_SECRET,
       { expiresIn: "1d" }
     );
     console.log(`User ${token} logged in successfully`);
-    user.token = token;
-    
-    return user;
+
+    return this.sanitizeUser(user, { token });
   }
 
   async getAllUsers() {
@@ -71,7 +82,7 @@ class UserService {
       { new: true }
     );
 
-    return user;
+    return this.sanitizeUser(user);
 
   }
 

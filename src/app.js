@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const userRoutes = require('./routes/userRoutes');
 const teamRoutes = require('./routes/teamRoutes');
 const playerRoutes = require('./routes/playerRoutes');
+const publicRoutes = require('./routes/publicRoutes');
 
 const tournamentsRoutes = require('./routes/tournamentsRoutes');
 const matchRoutes = require('./routes/matchRoutes');
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("views", "./src/views");
 // Routes
+app.use('/api/public', publicRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/teams', teamRoutes);
 app.use('/api/players', playerRoutes);

@@ -8,9 +8,10 @@ const populateFields = [
 
 class BallService {
   async createBall(data) {
-    const ball = await Ball.create(data);
-    if (!ball) throw new Error('Ball creation failed');
-    return ball;
+    const createdBall = await Ball.create(data);
+    if (!createdBall) throw new Error('Ball creation failed');
+
+    return await Ball.findById(createdBall._id).populate(populateFields);
   }
 
   async getAllBalls() {

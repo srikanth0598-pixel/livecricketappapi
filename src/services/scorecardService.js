@@ -9,9 +9,10 @@ const populateFields = [
 
 class ScorecardService {
   async createScorecard(data) {
-    const scorecard = await Scorecard.create(data);
-    if (!scorecard) throw new Error('Scorecard creation failed');
-    return scorecard;
+    const createdScorecard = await Scorecard.create(data);
+    if (!createdScorecard) throw new Error('Scorecard creation failed');
+
+    return await Scorecard.findById(createdScorecard._id).populate(populateFields);
   }
 
   async getAllScorecards() {

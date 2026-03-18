@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { createBall, getAllBalls, getBallById, updateBall, deleteBall } = require('../controllers/ballController');
+const { protect, requireRoles } = require('../middlewares/auth');
+
+router.use(protect, requireRoles('admin', 'scorer'));
 
 router.get('/', getAllBalls);
 router.post('/', createBall);
